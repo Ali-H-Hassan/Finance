@@ -74,6 +74,18 @@ class BackendTestCase(unittest.TestCase):
         
         mock_update_transaction.assert_called_once_with(1, updated_transaction_data)
 
+    @patch('routes.delete_transaction')
+    def test_remove_transaction(self, mock_delete_transaction):
+        response = self.app.delete('/api/transactions/1')
+      
+        self.assertEqual(response.status_code, 200)
+        
+        data = json.loads(response.get_data(as_text=True))
+        
+        self.assertEqual(data, {"message": "Transaction deleted"})
+        
+        mock_delete_transaction.assert_called_once_with(1)
+
 
 if __name__ == '__main__':
     unittest.main()
