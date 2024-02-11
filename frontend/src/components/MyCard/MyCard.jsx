@@ -1,13 +1,10 @@
 import React from "react";
 import "./MyCard.css";
-import Card from "../Assets/Card.png";
+import Card from "../Assets/Credit card.png";
 
 function MyCard() {
   return (
     <div className="my-card">
-      <h1>My Card</h1>
-      <p>Keep track your financial plan</p>
-
       <div className="card-container">
         <div className="card-preview">
           <img src={Card} alt="Card" />
@@ -27,9 +24,6 @@ function MyCard() {
             <span>CVV (3-digit security code)</span>
             <span>***</span>
           </div>
-          <button className="personalize-button">
-            See how we can personalize your account:
-          </button>
         </div>
       </div>
 
