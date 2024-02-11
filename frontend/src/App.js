@@ -2,6 +2,8 @@ import React from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import MyWallet from "./components/MyWallet/MyWallet";
 import MyCard from "./components/MyCard/MyCard";
+import Chart from "./components/FinanceChart/FinanceChart";
+
 import "./App.css";
 
 function App() {
@@ -10,7 +12,7 @@ function App() {
       <div className="app-layout">
         <Sidebar />
         <div className="main-content">
-          <MyCard />
+          <Chart />
         </div>
       </div>
     </div>
