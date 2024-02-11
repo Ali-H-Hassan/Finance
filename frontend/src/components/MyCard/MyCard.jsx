@@ -1,24 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./MyCard.css";
-import Card from "../Assets/Credit card.png";
+import CardImage from "../Assets/Credit card.png";
 
 function MyCard() {
+  const [cardData, setCardData] = useState({
+    cardNumber: "",
+    expiryDate: "",
+    cvv: "",
+    cardholderName: "",
+  });
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/api/cards")
+      .then((response) => response.json())
+      .then((data) => {
+        const firstCard = data[0];
+        setCardData({
+          cardNumber: firstCard.card_number,
+          expiryDate: firstCard.expiry_date,
+          cvv: firstCard.cvv,
+          cardholderName: firstCard.cardholder_name,
+        });
+      })
+      .catch((error) => console.error("Error fetching card data:", error));
+  }, []);
+
   return (
     <div className="my-card">
       <div className="card-container">
         <div className="card-preview">
-          <img src={Card} alt="Card" />
-          <div className="card-name">ADRIAN TRA</div>
+          <img src={CardImage} alt="Card" />
+          <div className="card-name">{cardData.cardholderName}</div>
         </div>
         <div className="card-details">
           <h2>Card Information</h2>
           <div className="card-info">
             <span>Card No.</span>
-            <span>4889 9271 1937 1932</span>
+            <span>{cardData.cardNumber}</span>
           </div>
           <div className="card-info">
             <span>Expiry date</span>
-            <span>12/28</span>
+            <span>{cardData.expiryDate}</span>
           </div>
           <div className="card-info">
             <span>CVV (3-digit security code)</span>
