@@ -1,0 +1,94 @@
+.finance-chart {
+  font-family: "Arial", sans-serif;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 900px;
+}
+
+.finance-chart h1 {
+  color: #333;
+  margin-bottom: 0.25em;
+}
+
+.finance-chart p {
+  color: #666;
+  margin-bottom: 1em;
+}
+
+.notification {
+  background-color: #eef4fd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification button {
+  border: none;
+  background-color: #4b77da;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.chart-section {
+  margin-bottom: 20px;
+}
+
+.chart-placeholder {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 300px;
+  margin-bottom: 20px;
+}
+
+.chart-filters {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart-filters select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statistic {
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  flex-grow: 1;
+  margin-right: 20px;
+}
+
+.statistic:last-child {
+  margin-right: 0;
+}
+
+.statistic span {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .statistics {
+    flex-direction: column;
+  }
+
+  .statistic {
+    margin-bottom: 20px;
+  }
+}
