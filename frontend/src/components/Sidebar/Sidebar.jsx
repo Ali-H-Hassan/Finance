@@ -1,6 +1,7 @@
 import React from "react";
 import "./Sidebar.css";
 import Logo from "../Assets/Logo.png";
+import Avatar from "../Assets/Avatar.png";
 
 function Sidebar() {
   return (
@@ -34,7 +35,7 @@ function Sidebar() {
 
       <div className="sidebar-footer">
         <a href="#" className="footer-link">
-          <img src="path_to_profile_image" alt="Adrian Tra" />
+          <img src={Avatar} alt="Adrian Tra" />
           <span>Adrian Tra</span>
         </a>
       </div>
