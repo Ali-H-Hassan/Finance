@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 import Logo from "../Assets/Logo.png";
@@ -6,6 +6,12 @@ import Avatar from "../Assets/Avatar.png";
 
 function Sidebar() {
   const navigate = useNavigate();
+  const [activeLink, setActiveLink] = useState("/my-wallet");
+
+  const handleNavClick = (path) => {
+    setActiveLink(path);
+    navigate(path);
+  };
 
   return (
     <nav className="sidebar">
@@ -15,24 +21,39 @@ function Sidebar() {
 
       <ul className="sidebar-nav">
         <li className="nav-item">
-          <a onClick={() => navigate("/my-wallet")} className="nav-link active">
+          <a
+            onClick={() => handleNavClick("/my-wallet")}
+            className={`nav-link ${
+              activeLink === "/my-wallet" ? "active" : ""
+            }`}
+          >
             My Wallet
           </a>
         </li>
         <li className="nav-item">
-          <a onClick={() => navigate("/my-card")} className="nav-link">
+          <a
+            onClick={() => handleNavClick("/my-card")}
+            className={`nav-link ${activeLink === "/my-card" ? "active" : ""}`}
+          >
             My Card
           </a>
         </li>
         <li className="nav-item">
-          <a onClick={() => navigate("/finance-chart")} className="nav-link">
+          <a
+            onClick={() => handleNavClick("/finance-chart")}
+            className={`nav-link ${
+              activeLink === "/finance-chart" ? "active" : ""
+            }`}
+          >
             Finance Chart
           </a>
         </li>
         <li className="nav-item">
           <a
-            onClick={() => navigate("/recent-transactions")}
-            className="nav-link"
+            onClick={() => handleNavClick("/recent-transactions")}
+            className={`nav-link ${
+              activeLink === "/recent-transactions" ? "active" : ""
+            }`}
           >
             Recent Transactions
           </a>
@@ -40,10 +61,10 @@ function Sidebar() {
       </ul>
 
       <div className="sidebar-footer">
-        <a href="#" className="footer-link">
+        <div className="footer-link">
           <img src={Avatar} alt="Adrian Tra" />
           <span>Adrian Tra</span>
-        </a>
+        </div>
       </div>
     </nav>
   );
