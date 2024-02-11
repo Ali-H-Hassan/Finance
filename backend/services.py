@@ -1,4 +1,4 @@
-from models import Transaction, Wallet, Fund, Card
+from models import Transaction, Wallet, Card
 from datetime import datetime
 
 transactions = [
@@ -11,7 +11,7 @@ cards = [
 ]
 
 wallet = Wallet("Adrian's Wallet", 124543, [], cards)
-
+wallets = [wallet]
 def get_all_transactions():
     return [t.__dict__ for t in transactions]
 

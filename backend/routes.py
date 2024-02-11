@@ -3,9 +3,10 @@ from utils import not_found
 import csv
 from flask import Response
 from flask import Blueprint, jsonify, request, Response
-from io import StringIO  # Make sure to import StringIO
+from io import StringIO  
+from models import Wallet
 api = Blueprint('api', __name__)
-
+wallets = [] 
 @api.route('/transactions', methods=['GET'])
 def get_transactions():
     return jsonify(get_all_transactions())
@@ -107,3 +108,21 @@ def download_transactions():
         "Content-Disposition": "attachment;filename=transactions.csv"
     }
     return Response(generate(), mimetype='text/csv', headers=headers)
+
+@api.route('/wallets', methods=['POST'])
+def create_wallet():
+    data = request.get_json()
+    new_wallet = Wallet(data['name'], 0, [], [])
+    wallets.append(new_wallet)
+    return jsonify(new_wallet.__dict__), 201
+
+@api.route('/send-payment', methods=['POST'])
+def send_payment():
+    return jsonify({"message": "Send payment functionality not implemented"}), 501
+
+@api.route('/request-payment', methods=['POST'])
+def request_payment():
+    return jsonify({"message": "Request payment functionality not implemented"}), 501
+@api.route('/wallets', methods=['GET'])
+def get_wallets():
+    return jsonify([wallet.__dict__ for wallet in wallets]), 200
