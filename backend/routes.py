@@ -8,9 +8,11 @@ api = Blueprint('api', __name__)
 def get_transactions():
     return jsonify(get_all_transactions())
 
-@api.route('/transactions', methods=['POST'])
+@api.route('/transactions', methods=['POST']) 
 def add_new_transaction():
-    data = request.json
+    if not request.is_json:
+        return jsonify({"message": "No JSON received"}), 400
+    data = request.get_json()
     return jsonify(add_transaction(data)), 201
 
 @api.route('/transactions/<int:transaction_id>', methods=['PUT'])
