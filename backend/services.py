@@ -1,10 +1,13 @@
 
-from models import Transaction, Wallet, Fund
+from models import Transaction, Wallet, Fund,Card
 from datetime import datetime
 
 transactions = [
     Transaction(1, "Grocery shopping", "2024-02-10", "Completed", 150.00),
     Transaction(2, "Coffee with friends", "2024-02-09", "Completed", 35.50)
+]
+cards = [
+    Card("4889 9271 1937 1932", "12/28", "123", "ADRIAN TRA")
 ]
 
 wallet = Wallet("Adrian's Wallet", 124543, [])
@@ -31,4 +34,22 @@ def delete_transaction(transaction_id):
 
 def get_wallet():
     return wallet.__dict__
+def get_all_cards():
+    return [card.__dict__ for card in cards]
 
+def add_card(data):
+    new_card = Card(**data)
+    cards.append(new_card)
+    return new_card.__dict__
+
+def update_card(card_number, data):
+    card = next((c for c in cards if c.card_number == card_number), None)
+    if card:
+        card.__dict__.update(data)
+        return card.__dict__
+    else:
+        raise ValueError("Card not found")
+
+def delete_card(card_number):
+    global cards
+    cards = [c for c in cards if c.card_number != card_number]
