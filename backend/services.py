@@ -1,5 +1,3 @@
-# services.py
-
 from models import Transaction, Wallet, Fund, Card
 from datetime import datetime
 
