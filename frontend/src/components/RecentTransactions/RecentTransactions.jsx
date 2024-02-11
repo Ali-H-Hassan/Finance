@@ -12,18 +12,7 @@ function RecentTransactions() {
     amount: 0,
   });
   const downloadTransactions = () => {
-    fetch("http://127.0.0.1:5000/download-transactions")
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "transactions.csv";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      })
-      .catch((error) => console.error("Error downloading the file:", error));
+    window.location.href = "http://127.0.0.1:5000/api/download-transactions";
   };
 
   useEffect(() => {
