@@ -10,7 +10,7 @@ cards = [
     Card("4889 9271 1937 1932", "12/28", "123", "ADRIAN TRA")
 ]
 
-wallet = Wallet("Adrian's Wallet", 124543, [])
+wallet = Wallet("Adrian's Wallet", 124543, [], [])
 
 def get_all_transactions():
     return [t.__dict__ for t in transactions]
