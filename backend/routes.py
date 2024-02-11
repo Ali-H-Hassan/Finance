@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from services import get_all_transactions, add_transaction, update_transaction, delete_transaction, get_wallet,get_all_cards,add_card,update_card,delete_card
 from utils import not_found
+import csv
+from flask import Response
 
 api = Blueprint('api', __name__)
 
@@ -67,14 +69,10 @@ def get_financial_statistics():
     }
     return jsonify(financial_statistics)
 
-# Add to routes.py
-
 @api.route('/chart-data', methods=['GET'])
 def get_chart_data():
-    chart_type = request.args.get('type', 'income')  # Default to 'income' if not specified
-    time_period = request.args.get('period', 'thisYear')  # Default to 'thisYear' if not specified
-    
-    # Dummy data for illustration purposes
+    chart_type = request.args.get('type', 'income')  
+    time_period = request.args.get('period', 'thisYear')  
     chart_data = {
         "labels": ["January", "February", "March", "April", "May"],
         "datasets": [{
@@ -86,3 +84,23 @@ def get_chart_data():
         }]
     }
     return jsonify(chart_data)
+@api.route('/download-transactions', methods=['GET'])
+def download_transactions():
+    transactions = get_all_transactions()  
+    
+    def generate():
+        data = StringIO()
+        writer = csv.writer(data)
+        
+        writer.writerow(['ID', 'Name', 'Date', 'Status', 'Amount'])
+        yield data.getvalue()
+        data.seek(0)
+        data.truncate(0)
+        
+        for transaction in transactions:
+            writer.writerow([transaction['id'], transaction['name'], transaction['date'], transaction['status'], transaction['amount']])
+            yield data.getvalue()
+            data.seek(0)
+            data.truncate(0)
+
+    return Response(generate(), mimetype='text/csv', headers={"Content-Disposition": "attachment;filename=transactions.csv"})
