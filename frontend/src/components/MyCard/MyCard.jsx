@@ -1,5 +1,6 @@
 import React from "react";
 import "./MyCard.css";
+import Card from "../Assets/Card.png";
 
 function MyCard() {
   return (
@@ -9,7 +10,7 @@ function MyCard() {
 
       <div className="card-container">
         <div className="card-preview">
-          {/* Card image or design here */}
+          <img src={Card} alt="Card" />
           <div className="card-name">ADRIAN TRA</div>
         </div>
         <div className="card-details">
@@ -34,7 +35,6 @@ function MyCard() {
 
       <div className="help-links">
         <h2>See Our Help</h2>
-        {/* List of help links */}
         <ul>
           <li>Check Your Cash Flow</li>
           <li>Change Primary Card</li>
