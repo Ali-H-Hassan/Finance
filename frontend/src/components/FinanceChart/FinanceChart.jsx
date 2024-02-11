@@ -1,57 +1,111 @@
-import React from "react";
-import "./FinanceChart.css"; // Make sure the CSS file is created and linked
+import React, { useState, useEffect } from "react";
+import "./FinanceChart.css";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function FinanceChart() {
+  const [financialStats, setFinancialStats] = useState({
+    lifetimeIncome: 0,
+    lifetimeOutcome: 0,
+    bonusIncome: 0,
+  });
+
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Income",
+        data: [],
+        borderColor: "rgb(75, 192, 192)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+      },
+    ],
+  });
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/api/financial-statistics")
+      .then((response) => response.json())
+      .then((data) => {
+        setFinancialStats({
+          lifetimeIncome: data.lifetimeIncome,
+          lifetimeOutcome: data.lifetimeOutcome,
+          bonusIncome: data.bonusIncome,
+        });
+      });
+
+    fetchChartData("income", "thisYear");
+  }, []);
+
+  const fetchChartData = (chartType, timePeriod) => {
+    fetch(
+      `http://127.0.0.1:5000/api/chart-data?type=${chartType}&period=${timePeriod}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setChartData({
+          ...chartData,
+          labels: data.labels,
+          datasets: [
+            {
+              ...chartData.datasets[0],
+              data: data.datasets[0].data,
+            },
+          ],
+        });
+      });
+  };
+
+  const handleChartTypeChange = (e) => {
+    fetchChartData(e.target.value, "thisYear");
+  };
+
   return (
     <div className="finance-chart">
       <h1>Finance Chart</h1>
       <p>Keep track your financial plan</p>
 
-      <div className="notification">
-        <span role="img" aria-label="Info">
-          ℹ️
-        </span>
-        Please remember to fill that data required for your debit card
-        <button>Got it</button>
-      </div>
-
       <div className="chart-section">
-        {/* Your chart will be rendered here, for now it's a placeholder */}
-        <div className="chart-placeholder">Chart Goes Here</div>
-        {/* Dropdowns for filtering the chart */}
+        <div className="chart-placeholder">
+          <Line data={chartData} options={{ responsive: true }} />
+        </div>
         <div className="chart-filters">
-          <select name="chartType">
+          <select name="chartType" onChange={handleChartTypeChange}>
             <option value="income">Income Chart</option>
-            {/* Other options */}
           </select>
           <select name="timePeriod">
             <option value="thisYear">This Year</option>
-            {/* Other options */}
           </select>
         </div>
       </div>
 
       <div className="statistics">
         <div className="statistic lifetime-income">
-          <span role="img" aria-label="Lifetime Income">
-            💼
-          </span>
-          Lifetime Income
-          <span>$40,728</span>
+          💼 Lifetime Income <span>${financialStats.lifetimeIncome}</span>
         </div>
         <div className="statistic lifetime-outcome">
-          <span role="img" aria-label="Lifetime Outcome">
-            💸
-          </span>
-          Lifetime Outcome
-          <span>$30,239</span>
+          💸 Lifetime Outcome <span>${financialStats.lifetimeOutcome}</span>
         </div>
         <div className="statistic bonus-income">
-          <span role="img" aria-label="Bonus Income">
-            🎉
-          </span>
-          Bonus Income
-          <span>$2,490</span>
+          🎉 Bonus Income <span>${financialStats.bonusIncome}</span>
         </div>
       </div>
     </div>

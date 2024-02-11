@@ -11,7 +11,7 @@ class Wallet:
         self.name = name
         self.balance = balance
         self.funds = funds  
-        self.cards = cards
+        self.cards = cards  
 
 class Fund:
     def __init__(self, name, target, progress, last_paid):

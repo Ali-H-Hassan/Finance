@@ -57,3 +57,32 @@ def update_existing_card(card_number):
 def remove_card(card_number):
     delete_card(card_number)
     return jsonify({"message": "Card deleted"}), 200
+
+@api.route('/financial-statistics', methods=['GET'])
+def get_financial_statistics():
+    financial_statistics = {
+        "lifetimeIncome": 40728,
+        "lifetimeOutcome": 30239,
+        "bonusIncome": 2490
+    }
+    return jsonify(financial_statistics)
+
+# Add to routes.py
+
+@api.route('/chart-data', methods=['GET'])
+def get_chart_data():
+    chart_type = request.args.get('type', 'income')  # Default to 'income' if not specified
+    time_period = request.args.get('period', 'thisYear')  # Default to 'thisYear' if not specified
+    
+    # Dummy data for illustration purposes
+    chart_data = {
+        "labels": ["January", "February", "March", "April", "May"],
+        "datasets": [{
+            "label": chart_type.capitalize(),
+            "data": [65, 59, 80, 81, 56],
+            "fill": False,
+            "backgroundColor": "rgb(75, 192, 192)",
+            "borderColor": "rgba(75, 192, 192, 0.2)",
+        }]
+    }
+    return jsonify(chart_data)
