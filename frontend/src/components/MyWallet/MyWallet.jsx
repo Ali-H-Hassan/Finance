@@ -57,10 +57,7 @@ function MyWallet() {
       {wallets.map((wallet, index) => (
         <div key={index} className="wallet-info">
           <div className="balance-info">
-            <span role="img" aria-label="Wave">
-              👋
-            </span>{" "}
-            Hi {wallet.name}!<div className="balance">${wallet.balance}</div>
+            {wallet.name}!<div className="balance">${wallet.balance}</div>
           </div>
           <div className="funds-container">
             {wallet.funds.map((fund, fundIndex) => (
