@@ -1,5 +1,6 @@
 .my-wallet {
   font-family: "Arial", sans-serif;
+  max-width: 1000px;
   margin: 20px auto;
   background-color: #fff;
   border-radius: 8px;
@@ -17,91 +18,71 @@
   margin-bottom: 2em;
 }
 
-.balance-info {
-  background-color: #f9f9f9;
+.wallet-info {
+  background-color: #f3f4f6;
   border-radius: 8px;
   padding: 1em;
+  margin-bottom: 1em;
+  transition: transform 0.2s ease-in-out;
+}
+
+.wallet-info:hover {
+  transform: translateY(-5px);
+}
+
+.main-wallet {
+  background-color: #4b77da;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.sub-wallet {
+  background-color: #ffffff;
+}
+
+.wallet-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
-.balance-info span {
-  font-size: 1.5em;
+.wallet-header h2 {
+  margin: 0;
+  font-weight: normal;
 }
 
-.balance-info .balance {
+.balance {
   font-size: 2em;
   font-weight: bold;
-  color: #333;
 }
 
 .actions {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2em;
+  text-align: right;
 }
 
 .payment-action {
-  background-color: #e0e0e0;
+  background-color: #34c759;
+  color: white;
   border: none;
   padding: 10px 20px;
+  margin: 5px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .payment-action:hover {
-  background-color: #d0d0d0;
-}
-
-.funds-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 2em;
-}
-
-.fund {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 1em;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.fund-details {
-  margin-top: 10px;
-}
-
-.progress {
-  background-color: #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-  height: 20px;
-  margin: 10px 0;
-}
-
-.progress:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0%;
-  height: 100%;
-  background-color: #4b77da;
-  border-radius: 8px;
-  transition: width 0.3s ease;
+  background-color: #30a850;
 }
 
 .create-wallet-action {
   text-align: center;
-  padding: 20px;
+  margin-top: 20px;
 }
 
 .create-wallet-action button {
-  background-color: #4b77da;
+  background-color: #2086c7;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -112,5 +93,15 @@
 }
 
 .create-wallet-action button:hover {
-  background-color: #3957a7;
+  background-color: #1a6a96;
+}
+
+.wallet-info.main-wallet .wallet-header h2,
+.wallet-info.main-wallet .balance {
+  color: #fff;
+}
+
+.wallet-info:not(.main-wallet) .wallet-header h2,
+.wallet-info:not(.main-wallet) .balance {
+  color: #333;
 }

@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./MyWallet.css";
 
 function MyWallet() {
   const [wallets, setWallets] = useState([
     { name: "Main Wallet", balance: 5000, funds: [] },
   ]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   const createNewWallet = () => {
     const walletName = prompt("Enter name for new wallet:", "New Wallet");
@@ -21,6 +15,10 @@ function MyWallet() {
   };
 
   const sendPayment = (walletIndex, amount) => {
+    if (walletIndex === 0) {
+      alert("Cannot send payment from the main wallet.");
+      return;
+    }
     if (wallets[0].balance < amount) {
       alert("Not enough balance in the main wallet.");
       return;
@@ -39,6 +37,10 @@ function MyWallet() {
   };
 
   const requestPayment = (walletIndex, amount) => {
+    if (walletIndex === 0) {
+      alert("Cannot request payment to the main wallet.");
+      return;
+    }
     if (wallets[walletIndex].balance < amount) {
       alert("Not enough balance in the wallet.");
       return;
@@ -70,35 +72,37 @@ function MyWallet() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <div className="my-wallet">
       <h1>My Wallet</h1>
       <p>Keep track of your financial plan</p>
 
       {wallets.map((wallet, index) => (
-        <div key={index} className="wallet-info">
-          <div className="balance-info">
-            {wallet.name}
+        <div
+          key={index}
+          className={`wallet-info ${
+            index === 0 ? "main-wallet" : "sub-wallet"
+          }`}
+        >
+          <div className="wallet-header">
+            <h2>{wallet.name}</h2>
             <div className="balance">${wallet.balance.toFixed(2)}</div>
           </div>
           <div className="actions">
-            <button
-              className="payment-action"
-              onClick={() => handlePaymentAction(index, true)}
-            >
-              Send a payment
-            </button>
             {index !== 0 && (
               <button
                 className="payment-action"
-                onClick={() => handlePaymentAction(index, false)}
+                onClick={() => handlePaymentAction(index, true)}
               >
-                Request a payment
+                Send a payment
               </button>
             )}
+            <button
+              className="payment-action"
+              onClick={() => handlePaymentAction(index, false)}
+            >
+              Request a payment
+            </button>
           </div>
         </div>
       ))}
