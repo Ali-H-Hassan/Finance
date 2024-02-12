@@ -30,11 +30,20 @@ function FinanceChart() {
   });
 
   const [chartData, setChartData] = useState({
-    labels: [],
+    labels: ["January", "February", "March", "April", "May"],
     datasets: [
       {
+        label: "",
+      },
+      {
+        label: "Expenses",
+        data: [3000, 4000, 2800, 4500, 6000],
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+      },
+      {
         label: "Income",
-        data: [],
+        data: [5000, 7000, 5500, 8000, 6500],
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
       },
@@ -61,15 +70,20 @@ function FinanceChart() {
     )
       .then((response) => response.json())
       .then((data) => {
-        setChartData({
-          ...chartData,
-          labels: data.labels,
-          datasets: [
-            {
-              ...chartData.datasets[0],
-              data: data.datasets[0].data,
-            },
-          ],
+        setChartData((prevData) => {
+          const dataSetIndex = chartType === "income" ? 0 : 1;
+
+          let newDatasets = [...prevData.datasets];
+          newDatasets[dataSetIndex] = {
+            ...prevData.datasets[dataSetIndex],
+            data: data.datasets[0].data,
+          };
+
+          return {
+            ...prevData,
+            labels: data.labels,
+            datasets: newDatasets,
+          };
         });
       });
   };
@@ -88,9 +102,6 @@ function FinanceChart() {
           <Line data={chartData} options={{ responsive: true }} />
         </div>
         <div className="chart-filters">
-          <select name="chartType" onChange={handleChartTypeChange}>
-            <option value="income">Income Chart</option>
-          </select>
           <select name="timePeriod">
             <option value="thisYear">This Year</option>
           </select>

@@ -57,7 +57,6 @@ function MyCard() {
           <li>Pay Tax</li>
           <li>Make Invoice</li>
           <li>Refer a Friend</li>
-          <li>Look More</li>
         </ul>
       </div>
     </div>

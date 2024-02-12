@@ -75,6 +75,7 @@
 .help-links h2 {
   color: #333;
   margin: 0 0 16px 0;
+  font-size: 28px;
 }
 
 .help-links ul {
@@ -89,7 +90,7 @@
   position: relative;
   color: #333;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .help-links ul {
@@ -108,6 +109,15 @@
 }
 .help-links li:nth-child(2) {
   border-color: #9b59b6;
+}
+.help-links li:nth-child(3) {
+  border-color: #e74c3c;
+}
+.help-links li:nth-child(4) {
+  border-color: #9b59b6;
+}
+.help-links li:nth-child(5) {
+  border-color: #e74c3c;
 }
 
 @media (max-width: 768px) {
