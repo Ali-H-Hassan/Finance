@@ -144,6 +144,14 @@ class BackendTestCase(unittest.TestCase):
         self.assertEqual(data, updated_card_data)
         mock_update_card.assert_called_once_with("1234 5678 9012 3456", updated_card_data)
 
+    @patch('routes.delete_card')
+    def test_remove_card(self, mock_delete_card):
+     mock_delete_card.return_value = None
+
+     response = self.app.delete('/api/cards/1234 5678 9012 3456')
+     self.assertEqual(response.status_code, 200)
+
+     mock_delete_card.assert_called_once_with("1234 5678 9012 3456")
 
 if __name__ == '__main__':
     unittest.main()
