@@ -38,6 +38,7 @@
 
 .card-details {
   width: 45%;
+  font-size: 20px;
 }
 
 .card-info {
@@ -88,6 +89,7 @@
   position: relative;
   color: #333;
   cursor: pointer;
+  font-size: 20px;
 }
 
 .help-links ul {

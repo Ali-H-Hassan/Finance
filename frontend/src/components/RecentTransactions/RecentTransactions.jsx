@@ -5,6 +5,7 @@ function RecentTransactions() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [newTransaction, setNewTransaction] = useState({
     name: "",
     date: "",
@@ -65,6 +66,14 @@ function RecentTransactions() {
     }));
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredTransactions = transactions.filter((transaction) =>
+    transaction.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -73,7 +82,12 @@ function RecentTransactions() {
       <h1>Recent Transactions</h1>
 
       <div className="search-container">
-        <input type="text" placeholder="Search" />
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
         <button className="search-button">🔍</button>
       </div>
 
@@ -88,7 +102,7 @@ function RecentTransactions() {
           </tr>
         </thead>
         <tbody>
-          {transactions.map((transaction) => (
+          {filteredTransactions.map((transaction) => (
             <tr key={transaction.id}>
               <td>{transaction.id}</td>
               <td>{transaction.name}</td>
