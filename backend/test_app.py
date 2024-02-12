@@ -27,6 +27,12 @@ mock_wallet = {
         {'card_number': "4889 9271 1937 1932", 'expiry_date': "12/28", 'cvv': "123", 'cardholder_name': "ADRIAN TRA"}
     ]
 }
+new_card_data = {
+    'card_number': "1234 5678 9012 3456",
+    'expiry_date': "12/25",
+    'cvv': "789",
+    'cardholder_name': "ADRIAN TRA"
+}
 class BackendTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -106,6 +112,20 @@ class BackendTestCase(unittest.TestCase):
         self.assertEqual(data, mock_wallet)
         
         mock_get_wallet.assert_called_once()
+
+    @patch('routes.add_card')
+    def test_add_new_card(self, mock_add_card):
+        mock_add_card.return_value = {**new_card_data, 'id': 1}
+        
+        response = self.app.post('/api/cards', json=new_card_data)
+        
+        data = json.loads(response.get_data(as_text=True))
+
+        self.assertEqual(response.status_code, 201)
+        
+        self.assertEqual(data, {**new_card_data, 'id': 1})
+        
+        mock_add_card.assert_called_once_with(new_card_data)
 
 if __name__ == '__main__':
     unittest.main()
