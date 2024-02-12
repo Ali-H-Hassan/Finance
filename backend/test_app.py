@@ -127,5 +127,23 @@ class BackendTestCase(unittest.TestCase):
         
         mock_add_card.assert_called_once_with(new_card_data)
 
+    @patch('routes.update_card')
+    def test_update_existing_card(self, mock_update_card):
+        updated_card_data = {
+        'card_number': "1234 5678 9012 3456",
+        'expiry_date': "12/30",
+        'cvv': "987",
+        'cardholder_name': "ADRIAN UPDATED"
+    }
+        mock_update_card.return_value = updated_card_data
+
+        response = self.app.put('/api/cards/1234 5678 9012 3456', json=updated_card_data)
+        data = json.loads(response.get_data(as_text=True))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data, updated_card_data)
+        mock_update_card.assert_called_once_with("1234 5678 9012 3456", updated_card_data)
+
+
 if __name__ == '__main__':
     unittest.main()
