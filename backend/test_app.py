@@ -153,5 +153,18 @@ class BackendTestCase(unittest.TestCase):
 
      mock_delete_card.assert_called_once_with("1234 5678 9012 3456")
 
+    @patch('routes.get_all_transactions')
+    def test_download_transactions(self, mock_get_all_transactions):
+        mock_get_all_transactions.return_value = [
+            {'id': 1, 'name': 'Grocery Shopping', 'date': '2024-01-01', 'status': 'Completed', 'amount': 150.00},
+            {'id': 2, 'name': 'Gym Membership', 'date': '2024-01-02', 'status': 'Completed', 'amount': 50.00}
+        ]
+
+        response = self.app.get('/api/download-transactions')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.data.startswith(b'ID,Name,Date,Status,Amount\r\n1,Grocery Shopping,2024-01-01,Completed,150.0\r\n2,Gym Membership,2024-01-02,Completed,50.0'))
+
+        mock_get_all_transactions.assert_called_once()
+
 if __name__ == '__main__':
     unittest.main()
