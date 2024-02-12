@@ -79,12 +79,16 @@ function RecentTransactions() {
 
   return (
     <div className="recent-transactions">
-      <h1>Recent Transactions</h1>
-
+      <div className="header">
+        <h1>Recent Transactions</h1>
+        <button onClick={downloadTransactions} className="download-button">
+          Download Transactions
+        </button>
+      </div>
       <div className="search-container">
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Search transactions"
           value={searchTerm}
           onChange={handleSearchChange}
         />
@@ -150,7 +154,6 @@ function RecentTransactions() {
         />
         <button type="submit">Add Transaction</button>
       </form>
-      <button onClick={downloadTransactions}>Download Transactions</button>
     </div>
   );
 }
