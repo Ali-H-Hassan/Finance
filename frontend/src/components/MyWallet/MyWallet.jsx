@@ -2,48 +2,72 @@ import React, { useState, useEffect } from "react";
 import "./MyWallet.css";
 
 function MyWallet() {
-  const [wallets, setWallets] = useState([]);
+  const [wallets, setWallets] = useState([
+    { name: "Main Wallet", balance: 5000, funds: [] },
+  ]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/wallets")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setWallets(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    setLoading(false);
   }, []);
 
   const createNewWallet = () => {
     const walletName = prompt("Enter name for new wallet:", "New Wallet");
     if (!walletName) return;
 
-    fetch("http://127.0.0.1:5000/api/wallets", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: walletName }),
-    })
-      .then((response) =>
-        response.ok
-          ? response.json()
-          : Promise.reject("Failed to create wallet")
-      )
-      .then((newWallet) => {
-        setWallets([...wallets, newWallet]);
+    const newWallet = { name: walletName, balance: 0, funds: [] };
+    setWallets([...wallets, newWallet]);
+  };
+
+  const sendPayment = (walletIndex, amount) => {
+    if (wallets[0].balance < amount) {
+      alert("Not enough balance in the main wallet.");
+      return;
+    }
+
+    setWallets((currentWallets) =>
+      currentWallets.map((wallet, index) => {
+        if (index === walletIndex) {
+          return { ...wallet, balance: wallet.balance + amount };
+        } else if (index === 0) {
+          return { ...wallet, balance: wallet.balance - amount };
+        }
+        return wallet;
       })
-      .catch((error) => console.error("Error creating new wallet:", error));
+    );
+  };
+
+  const requestPayment = (walletIndex, amount) => {
+    if (wallets[walletIndex].balance < amount) {
+      alert("Not enough balance in the wallet.");
+      return;
+    }
+
+    setWallets((currentWallets) =>
+      currentWallets.map((wallet, index) => {
+        if (index === walletIndex) {
+          return { ...wallet, balance: wallet.balance - amount };
+        } else if (index === 0) {
+          return { ...wallet, balance: wallet.balance + amount };
+        }
+        return wallet;
+      })
+    );
+  };
+
+  const handlePaymentAction = (walletIndex, isSending) => {
+    const amount = parseFloat(prompt("Enter amount:", "0"));
+    if (!amount || isNaN(amount) || amount <= 0) {
+      alert("Invalid amount entered.");
+      return;
+    }
+
+    if (isSending) {
+      sendPayment(walletIndex, amount);
+    } else {
+      requestPayment(walletIndex, amount);
+    }
   };
 
   if (loading) return <div>Loading...</div>;
@@ -57,39 +81,24 @@ function MyWallet() {
       {wallets.map((wallet, index) => (
         <div key={index} className="wallet-info">
           <div className="balance-info">
-            {wallet.name}!<div className="balance">${wallet.balance}</div>
-          </div>
-          <div className="funds-container">
-            {wallet.funds.map((fund, fundIndex) => (
-              <div className="fund" key={fundIndex}>
-                <span role="img" aria-label={fund.name}>
-                  {fund.emoji}
-                </span>{" "}
-                {fund.name}
-                <div className="fund-details">
-                  Last Paid on {fund.last_paid}
-                  <div
-                    className="progress"
-                    style={{ width: `${fund.progress}%` }}
-                  ></div>
-                  ${fund.amount} / ${fund.target}
-                </div>
-              </div>
-            ))}
+            {wallet.name}
+            <div className="balance">${wallet.balance.toFixed(2)}</div>
           </div>
           <div className="actions">
             <button
               className="payment-action"
-              onClick={() => console.log("Send payment")}
+              onClick={() => handlePaymentAction(index, true)}
             >
               Send a payment
             </button>
-            <button
-              className="payment-action"
-              onClick={() => console.log("Request payment")}
-            >
-              Request a payment
-            </button>
+            {index !== 0 && (
+              <button
+                className="payment-action"
+                onClick={() => handlePaymentAction(index, false)}
+              >
+                Request a payment
+              </button>
+            )}
           </div>
         </div>
       ))}
