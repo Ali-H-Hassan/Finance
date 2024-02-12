@@ -19,7 +19,14 @@ updated_transaction_data = {
     'status': 'Completed',
     'amount': 200.00 
 }
-
+mock_wallet = {
+    'name': "Adrian's Wallet",
+    'balance': 124543,
+    'funds': [],
+    'cards': [
+        {'card_number': "4889 9271 1937 1932", 'expiry_date': "12/28", 'cvv': "123", 'cardholder_name': "ADRIAN TRA"}
+    ]
+}
 class BackendTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -86,6 +93,19 @@ class BackendTestCase(unittest.TestCase):
         
         mock_delete_transaction.assert_called_once_with(1)
 
+    @patch('routes.get_wallet')
+    def test_get_user_wallet(self, mock_get_wallet):
+        mock_get_wallet.return_value = mock_wallet
+        
+        response = self.app.get('/api/wallet')
+        
+        data = json.loads(response.get_data(as_text=True))
+        
+        self.assertEqual(response.status_code, 200)
+        
+        self.assertEqual(data, mock_wallet)
+        
+        mock_get_wallet.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()
